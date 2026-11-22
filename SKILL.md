@@ -100,8 +100,9 @@ Run the phases in order. Skip a phase only when it is genuinely irrelevant, and 
 
 **Interaction**
 - Every state exists: hover, focus-visible, active, disabled, loading, error, empty, success.
-- Destructive actions confirm or offer undo. Errors say what went wrong and how to fix it.
-- Buttons name their action ("Save changes", not "Submit").
+- Irreversible actions get a confirmation step or an undo window. Error messages state what
+  happened and what to do next.
+- Button labels state the outcome ("Save changes" rather than a generic "Submit").
 - Use `<button>` for actions and `<a>` for navigation.
 
 **Motion**

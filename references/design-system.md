@@ -49,9 +49,9 @@ Name tokens by role, not value (`--color-danger`, not `--color-red`).
   --leading-tight: 1.2; --leading-body: 1.5;
   --tracking-display: -0.02em;
 
-  /* Space: 4px base, with middle steps */
-  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
-  --space-6: 1.5rem;  --space-8: 2rem;   --space-12: 3rem;   --space-16: 4rem;
+  /* Spacing: 4px grid, named by size */
+  --gap-xxs: 0.25rem; --gap-xs: 0.5rem; --gap-sm: 0.75rem; --gap-md: 1rem;
+  --gap-lg: 1.5rem;   --gap-xl: 2rem;   --gap-2xl: 3rem;   --gap-3xl: 4rem;
 
   /* Radius: by level */
   --radius-control: 0.375rem;   /* inputs, buttons */
@@ -63,8 +63,8 @@ Name tokens by role, not value (`--color-danger`, not `--color-red`).
   --shadow-overlay: 0 8px 24px -4px rgb(0 0 0 / 0.16), 0 2px 6px rgb(0 0 0 / 0.08);
 
   /* Motion */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --duration-fast: 120ms; --duration-base: 200ms; --duration-slow: 360ms;
 
   /* Layout */

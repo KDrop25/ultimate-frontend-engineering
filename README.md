@@ -103,3 +103,9 @@ Each reference file should stay focused on one topic and give actionable rules w
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+All guidance in this repository is written for this project and does not reproduce text from
+third-party publications. Product names (such as Linear or Stripe) appear only as design
+benchmarks, and library names appear only where the guidance refers to them. Standard values
+such as easing curves, WCAG thresholds, and Core Web Vitals targets are published facts and are
+used as such. Verify any value against current documentation before relying on it in production.

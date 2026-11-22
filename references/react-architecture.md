@@ -36,8 +36,8 @@ Rules:
   variants differ in structure, not just style. Style-only variants can stay as a `variant` prop.
 - **Compound components** for complex widgets (tabs, menus, dialogs, composers): a provider holds
   state; subcomponents read it through context; consumers compose the parts they need.
-- **Children over render props.** Use `children` for composition. Use `renderX` props only when
-  the parent must pass data back into the render slot.
+- **Prefer `children` to render-prop APIs.** Nest content as children. Reach for a render function
+  only when the parent has to hand data back to the slot.
 - **Explicit variants** over mode booleans: `<Composer.Input />` and `<Composer.Textarea />`
   instead of `<Composer multiline />`.
 - **React 19:** `use()` replaces `useContext()`; `forwardRef` is no longer required because `ref`

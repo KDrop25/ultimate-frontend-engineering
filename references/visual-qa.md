@@ -47,7 +47,7 @@ code-level checks, not visual ones.
 
 ## Critique checklist (score 1–5)
 
-1. **Hierarchy:** in three seconds, is it clear what this is and what to do next?
+1. **Hierarchy:** can a first-time visitor identify the product and its main action at a glance?
 2. **Typography:** clear scale steps; body ≥16px; headings balanced; measure 45–75ch for prose; no
    widows in headings; numerals aligned in tables.
 3. **Rhythm:** section spacing consistent and from tokens; related items closer than unrelated.
@@ -89,7 +89,7 @@ Use the same checklist plus this code-level scan on the files in scope. Report f
 
 - Icon-only buttons missing `aria-label`
 - Inputs without labels; placeholder used as the only label
-- `<div>` or `<span>` with click handlers (should be `<button>`/`<a>`)
+- Clickable containers (`<div>`/`<span>` with a click handler) where a button or link belongs
 - `outline: none` without a focus replacement
 - `transition: all`
 - Animations without a `prefers-reduced-motion` path

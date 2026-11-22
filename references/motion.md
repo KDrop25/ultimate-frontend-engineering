@@ -8,14 +8,14 @@ that repeats often is debt.
 
 | How often the user sees it | Decision |
 |---|---|
-| 100+ times a day (keyboard shortcuts, command palette toggle) | No animation |
-| Tens of times a day (hover, list navigation, toggles) | Remove or reduce to ~100ms |
-| Occasionally (menus, drawers, toasts, dialogs) | Standard animation |
-| Rarely (onboarding, celebrations, first-run) | Room for delight |
+| Multiple times per hour, every day (keyboard shortcuts, command palette) | No animation |
+| Many times per session (hover states, list navigation, toggles) | Remove, or keep under ~100ms |
+| A few times per session (menus, drawers, toasts, dialogs) | Standard, restrained animation |
+| Rarely seen (onboarding, celebrations, first-run states) | Room for expressive motion |
 
-Valid purposes: acknowledge an action, show a state change, preserve spatial continuity,
-prevent a jarring appearance, direct attention once. "It looks cool" on frequent UI is not
-a purpose.
+Motion is justified when it acknowledges an action, shows a state change, keeps spatial
+context, avoids an abrupt appearance, or draws attention once. Decoration on frequently used
+controls costs more attention than it earns.
 
 ## Choose the motion thesis
 
@@ -33,36 +33,38 @@ or one reveal rather than scattered effects.
 Default curves (use these or a similar strong custom curve from easing.dev / easings.co):
 
 ```css
---ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* entering, responding */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* moving on screen */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);   /* sheets and drawers */
+--ease-out: cubic-bezier(0.33, 1, 0.68, 1);      /* entering, responding */
+--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);   /* moving on screen */
 --duration-press: 120ms;
 --duration-small: 180ms;   /* tooltips, toggles */
 --duration-base: 240ms;    /* dropdowns, selects */
 --duration-large: 380ms;   /* modals, drawers (max ~500ms) */
 ```
 
-- Entering or exiting → `ease-out`. Moving or morphing → `ease-in-out`. Hover or color → `ease`.
-  Constant motion (progress, marquee) → `linear`.
-- Never `ease-in` on UI: it delays the moment the user is watching.
-- Exit faster than enter (for example enter 250ms, exit 180ms).
-- Keep UI under 300ms except modals, drawers, sheets and toasts.
-- Feedback that feels slow reads as latency; a faster spinner makes load feel faster.
+- Pick the curve by the motion's direction: an element arriving or responding uses an
+  ease-out curve; an element travelling across the screen uses ease-in-out; color and
+  opacity changes use a plain ease; continuous progress indicators use linear.
+- Avoid ease-in for interface responses. It keeps the element still at the start, which is when
+  the user is watching most closely.
+- Let exits run shorter than entrances (for example 250ms in, 180ms out).
+- Keep most interface motion under 300ms. Modals, drawers, sheets, and toasts may run a little longer.
+- Perceived speed matters: a faster spinner makes loading feel quicker.
 
 ## Physicality
 
-- Buttons: `transform: scale(0.97)` on `:active` with `transition: transform 160ms var(--ease-out)`.
-  Range 0.95–0.98.
-- Never animate from `scale(0)`. Start at 0.9–0.97 with `opacity: 0`.
-- Popovers, menus and tooltips scale from their trigger: `transform-origin: var(--transform-origin)`.
-  Modals stay centered (`transform-origin: center`).
-- Translate with percentages (`translateY(100%)`) for elements of unknown size.
-- `scale()` also scales children; use it for press feedback.
+- Press feedback: scale a button to about 0.97 on `:active`, with a short transform transition
+  (roughly 160ms). Keep the scale between 0.95 and 0.98.
+- Do not start an entrance at `scale(0)`. Start near 0.9–0.97 combined with `opacity: 0`.
+- Anchor popovers, menus, and tooltips to their trigger with `transform-origin: var(--transform-origin)`
+  (a variable your positioning library provides). Modals stay centered (`transform-origin: center`).
+- Use percentage translations (`translateY(100%)`) for elements whose size you do not know.
+- `scale()` also scales child content, which suits press feedback.
 
 ## Transitions over keyframes for interactive UI
 
-CSS transitions can be interrupted and retargeted; keyframes restart from zero. Use
-transitions for anything users can trigger repeatedly (toasts, toggles, tabs, accordions).
+When a state changes mid-transition, a CSS transition retargets from its current position.
+A keyframe animation restarts from its beginning. Prefer transitions for controls a user can
+trigger repeatedly, such as toasts, toggles, tabs, and accordions.
 
 ```css
 .toast {
@@ -78,12 +80,12 @@ Fallback without `@starting-style`: set `data-mounted` after first paint.
 Use springs for drag with momentum, interruptible gestures and decorative pointer-follow.
 
 ```js
-{ type: "spring", duration: 0.5, bounce: 0.2 }   // readable form (Motion)
-{ type: "spring", stiffness: 300, damping: 30 }  // physics form
+{ type: "spring", duration: 0.5, bounce: 0.2 }   // duration + bounce form
+{ type: "spring", stiffness: 300, damping: 30 }  // stiffness + damping form
 ```
 
-Keep bounce 0.1–0.3 and reserve it for drag-to-dismiss and playful surfaces. Springs keep
-velocity when interrupted; keyframes do not.
+Keep bounce low (roughly 0.1–0.3) and limit it to drag-to-dismiss or playful surfaces. A spring
+carries its current velocity into a new target when interrupted; a keyframe animation does not.
 
 Pointer-follow effects: interpolate with a spring (`useSpring`), not the raw pointer value,
 and only when decorative.
@@ -97,11 +99,13 @@ and only when decorative.
 
 ## clip-path and masking
 
-- `clip-path: inset(...)` reveals and tab-indicator color transitions (duplicate the tab row,
-  clip the active copy, animate the clip).
-- Reveal on scroll: `inset(0 0 100% 0)` → `inset(0 0 0 0)` with IntersectionObserver, once.
-- Masking a messy crossfade: a 2px `filter: blur()` during the transition.
-- Keep blur under 20px; heavy blur is expensive, especially in Safari.
+- A `clip-path: inset(...)` can reveal content or move a highlight between items. For a
+  two-color tab switch, render a second copy of the tab row in the active colors and reveal
+  it with an animated clip.
+- For a reveal on scroll, start from a fully clipped inset and animate to none once the
+  element enters the viewport (IntersectionObserver, one time only).
+- A brief 2px `filter: blur()` can soften a crossfade that shows two states at once.
+- Keep blur small (under about 20px). Large blurs are costly, particularly in Safari.
 
 ## Stagger
 
@@ -111,18 +115,19 @@ and only when decorative.
 
 ## Performance rules for motion
 
-- Animate `transform` and `opacity` by default. `clip-path`, `filter` (small blur), and
-  `background-color` are acceptable when they stay smooth.
-- Animating `width`, `height`, `top`, `left`, `margin` or `padding` triggers layout each frame.
-  Replace with `transform` (or FLIP) when the visual result allows.
-- Shadow animation: prefer `filter: drop-shadow()` over `box-shadow` for repeated effects.
-- CSS variables inherit: setting `--x` on a parent restyles every child each frame. Set
-  `transform` directly on the moving element.
-- Do not drive per-frame animation through React state (`setState` in `pointermove`,
-  `scroll`, or `requestAnimationFrame`). Write to `ref.current.style` or a motion value.
-- Motion `x`/`y`/`scale` shorthands are hardware-accelerated from `motion` 14.2; on older
-  versions use the full `transform` string, or CSS/WAAPI for animations that must survive a
-  busy main thread.
+- Prefer animating `transform` and `opacity`. `clip-path`, a small `filter` blur, and
+  `background-color` are workable when they remain smooth on target devices.
+- Changing `width`, `height`, `top`, `left`, `margin`, or `padding` forces layout on every frame.
+  Use `transform`, or a FLIP technique, when it produces the same visual result.
+- For animated shadows, `filter: drop-shadow()` is usually cheaper than animating `box-shadow`.
+- A CSS custom property set on a parent forces style recalculation for all of its children on
+  each change. Write `transform` directly to the element that moves.
+- Keep per-frame values out of React state. Updating state inside `pointermove`, scroll, or
+  `requestAnimationFrame` handlers re-renders the tree every frame. Write to a ref's style or
+  a motion value instead.
+- In the `motion` library, the `x`/`y`/`scale` shorthands run on the compositor from version
+  14.2. Older versions run them on the main thread, so use the full `transform` string there,
+  or CSS/WAAPI for anything that must keep running while the main thread is busy.
 - Layout animations (`layout`, `layoutId`) and `onUpdate` run on the main thread; avoid them
   during page transitions or data loading.
 - `will-change` only on the element that animates, only after you observe a shift or measured
@@ -137,9 +142,9 @@ and only when decorative.
 ## Hover
 
 - Gate hover effects: `@media (hover: hover) and (pointer: fine) { … }`.
-- Hover must not move a neighbor or change the pointer target. Animate a child, not the
-  hovered element, to avoid edge flicker.
-- Delay hover previews with `transition-delay` on the hover state only, so leaving stays instant.
+- A hover effect should not shift a neighboring element or the hit area under the pointer.
+  Animate a child inside the hovered element so the pointer target stays put.
+- For hover previews, add `transition-delay` only to the entering state, so leaving still feels immediate.
 
 ## Loading animation and skeletons
 
@@ -171,8 +176,8 @@ and only when decorative.
 Better: keep opacity and color transitions that carry meaning, remove transform-based movement,
 parallax, auto-play, and looping motion. Reduced motion means fewer and gentler effects, not zero.
 
-Autoplay motion longer than 5 seconds next to other content needs pause, stop or hide controls.
-Muted decorative loops stop under reduced motion and when offscreen.
+Content that moves on its own for more than five seconds needs a way to pause, stop, or hide it
+(WCAG 2.2.2). Decorative loops also stop when reduced motion is requested or when they leave the viewport.
 
 ## Debugging motion
 
@@ -186,10 +191,10 @@ Muted decorative loops stop under reduced motion and when offscreen.
 
 | Before | After | Why |
 |---|---|---|
-| `transition: all 300ms` | `transition: transform 200ms var(--ease-out)` | explicit properties; `all` animates accidents |
-| `scale(0)` entrance | `scale(0.95)` + `opacity: 0` | nothing appears from nothing |
-| `ease-in` dropdown | `ease-out` custom curve | faster initial response |
-| No `:active` on button | `scale(0.97)` on `:active` | press feedback |
-| Keyboard action animated | remove | repeated too often to animate |
-| Modal with `transform-origin` at trigger | keep centered | modals are not trigger-anchored |
+| `transition: all 300ms` | `transition: transform 200ms var(--ease-out)` | name the properties; `all` also animates unplanned changes |
+| Entrance from `scale(0)` | Start at `scale(0.95)` with `opacity: 0` | a visible start state reads as natural |
+| `ease-in` on a dropdown | An ease-out curve | the early frames respond sooner |
+| Button without a pressed state | `scale(0.97)` on `:active` | confirms the press |
+| Keyboard shortcut triggers an animation | Remove it | too frequent to justify motion |
+| Modal that slides out of its trigger button | Keep it centered in the viewport | a dialog is not anchored to one element |
 | `margin-left` sidebar animation | `translateX` | no layout on every frame |

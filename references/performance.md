@@ -73,8 +73,8 @@ changes; field data (CrUX, RUM) judges them.
 - Explicit dimensions on every `<img>`.
 - `loading="lazy"` for below-the-fold images; `fetchpriority="high"` for the hero only.
 - Modern formats and responsive sizes. Compress; do not ship full-resolution assets into thumbnails.
-- Prefer `<video autoplay muted loop playsinline>` over animated GIFs, with a still fallback and a
-  `prefers-reduced-motion` check.
+- Replace large animated GIFs with a muted, looping, inline video. Include a still image as the
+  fallback and skip autoplay when reduced motion is requested.
 - Decorative images: `alt=""`. Meaningful images: descriptive `alt`.
 - Large lists of images: `content-visibility: auto` or virtualization.
 

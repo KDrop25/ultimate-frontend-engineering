@@ -22,11 +22,11 @@ reason does not apply to the brief, drop the rule.
 - Size, weight, space and color each carry hierarchy. Use at least two of them per level.
   Do not rely on size alone.
 - One primary action per view. Secondary actions are visually quieter (ghost or outline).
-- More space above a heading than below it; related items closer than unrelated ones.
+- Headings sit closer to the content they introduce than to whatever comes before them.
 
 ## Typography
 
-- Pick type before color. Choose families for the subject, not from habit.
+- Pick the typeface from the product's subject and audience; color comes after and supports it.
 - Body 16px minimum on web; prose measure 45–75ch (long-form reading sits at the 55–75 end).
   Serif body needs slightly more line height than sans.
 - Line height: about 1.5 for body, tighter (1.0–1.2) for large display, and wider for light
@@ -87,8 +87,8 @@ reason does not apply to the brief, drop the rule.
   Numbers only for real sequences.
 - Icons are drawn from one library with one stroke weight and size scale. Decorative icons
   beside text are hidden from assistive tech.
-- Illustrations and imagery: ship real imagery when the brief needs it; never fill with
-  decorative blobs or stock abstractions as a substitute for content.
+- Imagery should carry real content. Use decorative shapes or abstract art only when they
+  have a clear role; do not use them to fill space where content is missing.
 
 ## Styles as options (use only when the brief is open)
 
